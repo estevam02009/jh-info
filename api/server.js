@@ -5,6 +5,8 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const softwareRoutes = require('./routes/software');
+// const purchaseRoutes = require('./routes/purchase');
+const paymentRoutes = require('./routes/payment');
 const cors = require('cors');
 
 dotenv.config(); //Carrega variáveis de ambiente do .env
@@ -25,6 +27,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/softwares', softwareRoutes);
+app.use('/api/payment', paymentRoutes);
 
 const PORT = process.env.PORT || 5000;
 

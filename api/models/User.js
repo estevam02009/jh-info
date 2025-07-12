@@ -11,15 +11,23 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
+        match: [/.+\@.+\..+/, 'Por favor, insira um email válido']
     },
     password: {
         type: String,
         required: true,
+        minLength: [8, 'A senha deve ter pelo menos 8 caracteres'],
+        select: false, // Não retorna a senha padrão
     },
     role: {
         type: String,
         enum: ['user', 'admin'],
         default: 'user',
+    },
+    // Campo para controlar o acesso pago
+    hasPaidAccess: {
+        type: Boolean,
+        default: false,
     },
     createdAt: {
         type: Date,
