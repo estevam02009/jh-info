@@ -1,0 +1,78 @@
+import React from "react";
+import {Link, Routes, Route} from "react-router-dom";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import Home from "./pages/Home.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import ProtectedRoute from "./components/ProtectedRoute";
+import SoftwareList from "./pages/SoftwareList";
+import SoftwareDetails from "./pages/SoftwareDetails";
+import SoftwareManagement from "./pages/SoftwareManagement";
+import { useAuth } from "./context/AuthContext";
+
+
+const App = () => {
+
+    const { user, logout } = useAuth(); // Obtém o estado do usuário e a função de logout
+
+    return (
+        <>
+            <nav className="bg-blue-800 p-4">
+                <div className="container mx-auto flex justify-between items-center">
+                    <Link to="/" className="text-white text-2xl font-bold">JH Informática</Link>
+                    <div>
+                        <Link to="/" className="text-gray-300 hover:bg-white hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">Home</Link>
+                        <Link to="/softwares" className="text-gray-300 hover:bg-white hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">Softwares</Link>
+
+                    {/*    Links visiveis apenas se o usuário estiver logado    */}
+                        {user ? (
+                            <>
+                                <Link to="/dashboard" className="text-gray-300 hover:bg-white hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">Dashboard</Link>
+                            {/* Link para gerenciamento de softwares - visivel apenas para admins logados */}
+                                {user.role === "admin" && (
+                                    <Link to="/admin/softwares" className="text-gray-300 hover:bg-white hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">Gerenciar Softwares</Link>
+                                )}
+                                <button
+                                    onClick={logout}
+                                    className="bg-red-600 hover:bg-red-800 px-3 py-2 rounded-md text-sm text-white font-medium ml-4"
+                                >Sair</button>
+                            </>
+                        ) : (
+
+                            <>
+                                {/* Links visivéis apenas se o usuário não estiver logado */}
+                                <Link to="/login" className="text-gray-300 hover:bg-white hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">Login</Link>
+                                <Link to="/register" className="text-gray-300 hover:bg-white hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">Criar Conta</Link>
+                            </>
+                        )}
+                    </div>
+                </div>
+            </nav>
+
+            {/* Conteúdo principal*/}
+            <div className="container mx-auto p-4 mt-4">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+
+                    <Route path="/softwares" element={<SoftwareList />} /> {/* <-- Nova Rota */}
+                    <Route path="/softwares/:id" element={<SoftwareDetails />} />
+
+                {/* Rotas protegidas */}
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/dashboard" element={<Dashboard />}></Route>
+                    </Route>
+
+                    <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+                        <Route path="/admin/softwares" element={<SoftwareManagement />} />
+                    </Route>
+
+                    <Route path="*" element={<h2 className="text-4xl font-bold text-red-500">404 - Página não encontrada</h2>}></Route>
+                </Routes>
+            </div>
+        </>
+    )
+}
+
+export default App;
