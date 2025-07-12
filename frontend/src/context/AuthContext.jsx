@@ -5,6 +5,7 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+    // O estado 'user' agora conterá o campo 'hasPaidAccess'
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
     const [loading, setLoading] = useState(true); // Para saber se o token está sendo verificado
@@ -16,9 +17,23 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
         const storedUser = localStorage.getItem('user');
+
         if (storedToken && storedUser) {
             setToken(storedToken);
-            setUser(JSON.parse(storedUser));
+
+            if (storedToken && storedUser) {
+                setToken(storedToken);
+                // Garante que o usuário no estado inclui 'hasPaidAccess'
+                try {
+                    const userData = JSON.parse(storedUser);
+                    setUser(userData);
+                } catch (error) {
+                    console.error('Erro ao fazer parse do usuário do localStorage:', error);
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                }
+            }
+
             // Configura o token no cabeçalho padrão do Axios para todas as requisições
             axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
         }
@@ -28,11 +43,16 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             const response = await axios.post(`${API_URL}/auth/login`, { email, password });
-            const { token, ...userData } = response.data;
+            const { token, hasPaidAccess, ...userData } = response.data; // Capture 'hasPaidAccess'
+
             setToken(token);
-            setUser(userData);
+            // Certifique-se de que o objeto user no estado inclui hasPaidAccess
+            setUser({ ...userData, hasPaidAccess: hasPaidAccess });
+
             localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(userData));
+            // Armazene o objeto de usuário completo no localStorage, incluindo 'hasPaidAccess'
+            localStorage.setItem('user', JSON.stringify({ ...userData, hasPaidAccess: hasPaidAccess }));
+
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Atualiza o header
             return response.data;
         } catch (error) {
@@ -40,6 +60,12 @@ export const AuthProvider = ({ children }) => {
             throw error.response?.data || { message: 'Erro ao fazer login' };
         }
     };
+
+    // Função para atualizar o estado do usuário (útil após o pagamento)
+    const updateUserAccessStatus = (updatedUser) => {
+        setUser(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+    }
 
     const register = async (name, email, password, role = 'user') => {
         try {
@@ -61,7 +87,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
+        <AuthContext.Provider value={{ user, token, loading, login, register, logout, updateUserAccessStatus }}>
             {children}
         </AuthContext.Provider>
     );

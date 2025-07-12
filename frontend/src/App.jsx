@@ -8,6 +8,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import SoftwareList from "./pages/SoftwareList";
 import SoftwareDetails from "./pages/SoftwareDetails";
 import SoftwareManagement from "./pages/SoftwareManagement";
+import PaymentPage from "./pages/PaymentPage";
+import MySoftwares from "./pages/MySoftwares.jsx";
 import { useAuth } from "./context/AuthContext";
 
 
@@ -24,10 +26,18 @@ const App = () => {
                         <Link to="/" className="text-gray-300 hover:bg-white hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">Home</Link>
                         <Link to="/softwares" className="text-gray-300 hover:bg-white hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">Softwares</Link>
 
+                        {/* Link para a página de Pagamento/Assinatura */}
+                        {!user?.hasPaidAccess && (
+                            <Link to="/subscribe" className="text-green-400 hover:bg-gray-700 hover:text-green-200 px-3 py-2 rounded-md text-sm font-medium">Assinar Acesso</Link>
+                        )}
+
                     {/*    Links visiveis apenas se o usuário estiver logado    */}
                         {user ? (
                             <>
                                 <Link to="/dashboard" className="text-gray-300 hover:bg-white hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">Dashboard</Link>
+                                {user.hasPaidAccess && ( // Mostrar "Meus Softwares" apenas se tiver pago
+                                    <Link to="/my-softwares" className="text-gray-300 hover:bg-white hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">Meus Softwares</Link>
+                                )}
                             {/* Link para gerenciamento de softwares - visivel apenas para admins logados */}
                                 {user.role === "admin" && (
                                     <Link to="/admin/softwares" className="text-gray-300 hover:bg-white hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">Gerenciar Softwares</Link>
@@ -59,9 +69,13 @@ const App = () => {
                     <Route path="/softwares" element={<SoftwareList />} /> {/* <-- Nova Rota */}
                     <Route path="/softwares/:id" element={<SoftwareDetails />} />
 
+                    {/* Rota para a página de assinatura. É acessível se o usuário estiver logado ou não, mas a lógica de pagamento exige login */}
+                    <Route path="/subscribe" element={<PaymentPage />} />
+
                 {/* Rotas protegidas */}
                     <Route element={<ProtectedRoute />}>
                         <Route path="/dashboard" element={<Dashboard />}></Route>
+                        <Route path="/my-softwares" element={<MySoftwares />} />
                     </Route>
 
                     <Route element={<ProtectedRoute allowedRoles={['admin']} />}>

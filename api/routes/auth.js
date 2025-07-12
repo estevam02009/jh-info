@@ -38,6 +38,7 @@ router.post('/register', async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                hasPaidAccess: user.hasPaidAccess,
                 token: generateToken(user._id),
             });
         } else {
@@ -55,7 +56,7 @@ router.post('/login', async(req, res) => {
     const { email, password } = req.body;
 
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).select('+password');
 
         if (user && (await user.matchPassword(password))) {
             res.json({
@@ -63,6 +64,7 @@ router.post('/login', async(req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                hasPaidAccess: user.hasPaidAccess,
                 token: generateToken(user._id),
             });
         } else {
