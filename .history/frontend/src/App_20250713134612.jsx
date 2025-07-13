@@ -85,25 +85,6 @@ const App = () => {
                     <Route path="*" element={<h2 className="text-4xl font-bold text-red-500">404 - Página não encontrada</h2>}></Route>
                 </Routes>
             </div>
-
-            {/* Footer (Rodapé) */}
-            <footer className='bg-gray-900 p-4 text-white py-8 px-4 mt-auto'>
-                <div className="container mx-auto text-center">
-                    <p className="text-lg font-bold mb-2">JH Informática</p>
-                    <p className='text-sm text-gray-400 mb-2'>Seu parceiro em manutenção e suporte técnico</p>
-                    <div className="flex justify-center space-x-4 mb-4">
-                        <Link to="/privacy" className="text-gray-300 hover:text-white text-sm">Política de Privacidade</Link>
-                        <span className="text-gray-500 text-sm">|</span>
-                        <Link to="/terms" className="text-gray-300 hover:text-white text-sm">Termos de Serviços</Link>
-                        <span className="text-gray-500 text-sm">|</span>
-                        <Link to="/contact" className="text-gray-300 hover:text-white text-sm">Contato</Link>
-                    </div>
-
-                    <p className="text-xs text-gray-500">
-                        &copy; {new Date().getFullYear()} JH Informática. Todos os direitos reservados.
-                    </p>
-                </div>
-            </footer>
         </>
     )
 }

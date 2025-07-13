@@ -14,14 +14,14 @@ const Home = () => {
                     Conectando você ao mundo digital sem interrupções. Oferecemos soluções rápidas e eficientes para todos os seus problemas de software e hardware.
                 </p>
                 <div className="flex justify-center space-x-4">
-                    <Link
-                        to="/softwares"
+                    <Link 
+                        to="/softwares" 
                         className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300"
                     >
                         Ver Softwares
                     </Link>
-                    <Link
-                        to="/subscribe"
+                    <Link 
+                        to="/subscribe" 
                         className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300"
                     >
                         Assinar Acesso
@@ -64,17 +64,11 @@ const Home = () => {
             </div>
 
             {/* Seção de chamada para a ação */}
-            <div className="w-full bg-purple-600 text-white text-center py-16 px-4 mt-8">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Acesso Ilimitado aos Melhores Softwares</h2>
-                <p className="text-lg md:text-xl font-light mb-8 max-w-xl mx-auto">
-                    Com nossa assinatura, você tem acesso aos melhores utilitários para otimizar e proteger seu sistema.
+            <div className='w-full bg-purple-600 text-white py-16 px-4 text-center mt-8'>
+                <h2 className='text-4xl font-bold mb-4'>Acesso ilimitado aos melhores softwares</h2>
+                <p className='text-xl md:text-2xl font-light max-w-2xl mx-auto mb-8'>
+                    Com nossa assinatura, você tem acesso aos melhores utilitários para otimizar e proteger seu sistema
                 </p>
-                <Link
-                    to="/softwares"
-                    className="bg-white text-purple-600 font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 hover:bg-gray-100"
-                >
-                    Explorar Softwares
-                </Link>
             </div>
         </div>
     )

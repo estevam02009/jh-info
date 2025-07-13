@@ -96,12 +96,7 @@ const App = () => {
                         <span className="text-gray-500 text-sm">|</span>
                         <Link to="/terms" className="text-gray-300 hover:text-white text-sm">Termos de Serviços</Link>
                         <span className="text-gray-500 text-sm">|</span>
-                        <Link to="/contact" className="text-gray-300 hover:text-white text-sm">Contato</Link>
                     </div>
-
-                    <p className="text-xs text-gray-500">
-                        &copy; {new Date().getFullYear()} JH Informática. Todos os direitos reservados.
-                    </p>
                 </div>
             </footer>
         </>
