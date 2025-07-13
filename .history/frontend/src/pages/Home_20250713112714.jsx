@@ -51,15 +51,6 @@ const Home = () => {
                             Protegemos seu sistema contra malwares e vírus, garantindo a segurança e o desempenho dos seus dados.
                         </p>
                     </div>
-
-                    {/* Card de Serviços 2 */}
-                    <div className='bg-white rounded-xl shadow-xl p-8 text-center transition-transform transform hover:scale-106 duration-300'>
-                        <div className='text-5xl text-blue-600 mb-4'>🚀</div>
-                        <h3 className='text-2xl font-semibold text-gray-900 mb-2'>Otimização de Softwares</h3>
-                        <p className='text-gray-600'>
-                            Ajudamos a instalar e configurar programas essenciais para um fluxo de trabalho mais eficiente.
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
